@@ -1,6 +1,6 @@
 use clap::{App, Arg, Error};
 
-pub fn input_handler<'a>() -> Result<(String, String), Error> {
+pub fn input_handler<'a>() -> Result<(String, String, String), Error> {
     let matches = App::new("markdown_outliner")
         .version("0.1")
         .author("Nakamura")
@@ -12,15 +12,26 @@ pub fn input_handler<'a>() -> Result<(String, String), Error> {
                 .index(1),
         )
         .arg(
-            Arg::with_name("depth")
+            Arg::with_name("level")
+                .takes_value(true)
+                .short("l")
+                .default_value("6")
+                .help("Heading level. level 1 will catch only H1 title")
+                .possible_values(&["1", "2", "3", "4", "5", "6"]),
+        )
+        .arg(
+            Arg::with_name("direction")
                 .takes_value(true)
                 .short("d")
-                .default_value("6")
-                .help("Outline depth. depth 1 will catch only H1 title")
-                .possible_values(&["1", "2", "3", "4", "5", "6"]),
+                .default_value("LR")
+                .help(
+                    "Graphviz image direction. L=Left, R=Right, T=Top, B=Bottom. LR=Left to Right",
+                )
+                .possible_values(&["LR", "RL", "TB", "BT"]),
         )
         .get_matches();
     let file_name = matches.value_of("INPUT").unwrap().to_string();
-    let depth = matches.value_of("depth").unwrap().to_string();
-    Ok((file_name, depth))
+    let level = matches.value_of("level").unwrap().to_string();
+    let direction = matches.value_of("direction").unwrap().to_string();
+    Ok((file_name, level, direction))
 }

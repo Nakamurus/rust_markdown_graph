@@ -4,11 +4,12 @@ use markdown_outliner::relation_builder;
 use markdown_outliner::view::to_graphviz::visualize;
 
 fn main() {
-    let (file_name, depth) = input_handler().unwrap();
-    let titles = outline_filter(&file_name, &depth).unwrap();
+    let (filename, level, direction) = input_handler().unwrap();
+    let titles = outline_filter(&filename, &level).unwrap();
     let connected = relation_builder(&titles);
-    if let Ok(_) = visualize(&file_name, "LR", connected) {
-        println!("Created {}.dot successfully", file_name);
+    let filename_wo_extension = filename.split('.').next().unwrap();
+    if let Ok(_) = visualize(&filename_wo_extension, &direction, connected) {
+        println!("Created {}.dot successfully", filename_wo_extension);
     } else {
         println!("Could not create dot file");
     }
