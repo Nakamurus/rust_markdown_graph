@@ -7,8 +7,8 @@ fn main() {
     let (file_name, depth) = input_handler().unwrap();
     let titles = outline_filter(&file_name, &depth).unwrap();
     let connected = relation_builder(&titles);
-    if let Ok(_) = visualize(&file_name, connected) {
-        println!("Created {} successfully", file_name);
+    if let Ok(_) = visualize(&file_name, "LR", connected) {
+        println!("Created {}.dot successfully", file_name);
     } else {
         println!("Could not create dot file");
     }
