@@ -18,7 +18,7 @@ pub fn visualize(
     let mut used = BTreeSet::new();
     for (a, b) in connected.iter() {
         if used.insert((a, b)) {
-            writeln!(f, "{} -> {}", a, b).unwrap();
+            writeln!(f, r#""{}" -> "{}""#, a, b).unwrap();
         }
     }
     writeln!(f, "}}")
